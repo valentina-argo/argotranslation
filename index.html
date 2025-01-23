@@ -10,12 +10,16 @@
       const params = new URLSearchParams(window.location.search);
       const webhookUrl = params.get("webhookUrl");
       const subject = params.get("subject");
+      const vendor = params.get("vendor");
       const redirectUrl = params.get("redirectUrl");
 
       if (webhookUrl && redirectUrl) {
         try {
+          // Construct the webhook URL with all parameters
+          const webhookFullUrl = `${webhookUrl}?subject=${encodeURIComponent(subject)}&vendor=${encodeURIComponent(vendor)}`;
+
           // Trigger the Zapier webhook
-          const response = await fetch(`${webhookUrl}?subject=${encodeURIComponent(subject)}`, { method: "POST" });
+          const response = await fetch(webhookFullUrl, { method: "POST" });
 
           // Log success or failure (optional)
           console.log("Webhook response:", response);
